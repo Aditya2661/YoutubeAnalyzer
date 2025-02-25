@@ -1,15 +1,18 @@
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from vaderSentiment.vaderSentiment import SentimentIntensityAnalyzer
+
 import googleapiclient.discovery
 
 
 app = Flask(__name__)
 CORS(app)
+
+
 # YouTube API details
 api_service_name = "youtube"
 api_version = "v3"
-DEVELOPER_KEY = ""
+DEVELOPER_KEY = "AIzaSyCBItVF-vEK-o8OPOVjQbQbzUFq84eY_AE"
 
 youtube = googleapiclient.discovery.build(
     api_service_name, api_version, developerKey=DEVELOPER_KEY
@@ -82,10 +85,12 @@ def youtube_comments():
                 negCount += 1
             else:
                 neuCount += 1
+                
         totalComments = len(comments_with_sentiment)
         posCommentPercentage = (posCount/totalComments)*100
         negCommentPercentage = (negCount/totalComments)*100
         neuCommentPercentage = (neuCount/totalComments)*100
+        
         return jsonify({
             "Total negative comments": negCount,
             "Total positive comments": posCount,
